@@ -1,4 +1,16 @@
+def REACT_NATIVE_VERSION = new File(['node', '--print',"JSON.parse(require('fs').readFileSync(require.resolve('react-native/package.json'), 'utf-8')).version"].execute(null, rootDir).text.trim())
+
+allprojects {
+  configurations.all {
+      resolutionStrategy {
+          // Remove this override in 0.66, as a proper fix is included in react-native itself.
+          force "com.facebook.react:react-native:" + REACT_NATIVE_VERSION
+      }
+  }
+}
+
 buildscript {
+
   // Buildscript is evaluated before everything else so we can't use getExtOrDefault
   def kotlin_version = rootProject.ext.has('kotlinVersion') ? rootProject.ext.get('kotlinVersion') : project.properties['PagerView_kotlinVersion']
 
